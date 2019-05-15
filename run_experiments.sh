@@ -8,11 +8,11 @@ do
     do
         for notebook in ${dim_red}_${output_size}.ipynb
         do
-            /Users/cenk/.virtualenvs/experiments_on_mnist/bin/jupyter nbconvert --execute --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=-1 \
+            jupyter nbconvert --execute --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=-1 \
                 --to notebook --inplace $notebook
         done
     done
 done
 
-/Users/cenk/.virtualenvs/experiments_on_mnist/bin/jupyter nbconvert --execute --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=-1 \
+jupyter nbconvert --execute --ExecutePreprocessor.enabled=True --ExecutePreprocessor.timeout=-1 \
             --to notebook --inplace base.ipynb
