@@ -1,3 +1,4 @@
 sklearn
 jupyter
 matplotlib
+pandas
