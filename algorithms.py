@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
-from sklearn import ensemble, linear_model, naive_bayes, neighbors, svm, tree, neural_network
+from sklearn import ensemble
+from sklearn import linear_model
+from sklearn import naive_bayes
+from sklearn import neighbors
+from sklearn import neural_network
+from sklearn import svm
+from sklearn import tree
 
 
 def train_test(x_tr, y_tr, x_te, y_te, name):
@@ -27,4 +33,4 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
     tr_score = clf.score(x_tr, y_tr)
     score = clf.score(x_te, y_te)
     print(tr_score, score)
-    return {name: score, "%s_tr" % name: tr_score}
+    return {name: {'test': score, "train": tr_score}}

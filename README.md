@@ -1,5 +1,5 @@
-# experiments_on_mnist
-Simple MNIST experiments just for curiosity
+# Experimenting on Scikit Learn with mostly Classification Datasets
+On a simple Jupyter Notebook run multiple tasks and compare the results
 
-##### Run experiments
-``` sh run_experiments.sh $dataset```
+##### Run classification algorithms for each databases 
+``` sh run_experiments.sh ```
