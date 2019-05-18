@@ -13,13 +13,11 @@ def load(name):
         'cov_type': (cov_type.data, cov_type.target),
         'digits': load_digits(return_X_y=True),
         'iris': load_iris(return_X_y=True),
-        'kddcup99': fetch_kddcup99(shuffle=1, return_X_y=True,
-                                   percent10=False),
         'lfw': fetch_lfw_people(return_X_y=True),
         'mnist': openml.fetch_openml('mnist_784', version=1, return_X_y=True),
         'news_groups': (news_groups.data, news_groups.target),
         'olivetti_faces': (olivetti_faces.data, olivetti_faces.target),
-        'rcv1': fetch_rcv1(shuffle=True, random_state=0, return_X_y=True),
+        'rcv1': fetch_rcv1(random_state=0, return_X_y=True),
         'wine': load_wine(return_X_y=True)
     }
     return databases.get(name)

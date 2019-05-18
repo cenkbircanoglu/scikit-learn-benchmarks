@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from sklearn import ensemble, linear_model, naive_bayes, neighbors, svm, tree
+from sklearn import ensemble, linear_model, naive_bayes, neighbors, svm, tree, neural_network
 
 
 def train_test(x_tr, y_tr, x_te, y_te, name):
@@ -8,7 +8,7 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
         'bagging': ensemble.BaggingClassifier(),
         'extra_trees': ensemble.ExtraTreesClassifier(),
         'random_forest': ensemble.RandomForestClassifier(),
-        'logistic_regression': ensemble.LogisticRegression(),
+        'logistic_regression': linear_model.LogisticRegression(),
         'passive_aggressive': linear_model.PassiveAggressiveClassifier(),
         'ridge': linear_model.RidgeClassifier(),
         'sgd': linear_model.SGDClassifier(),
@@ -16,7 +16,7 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
         'gaussian': naive_bayes.GaussianNB(),
         'k_neighbors': neighbors.KNeighborsClassifier(),
         'nearest_centroid': neighbors.NearestCentroid(),
-        'mlp': neighbors.MLPClassifier(),
+        'mlp': neural_network.MLPClassifier(),
         'linear_svc': svm.LinearSVC(),
         'decision_tree': tree.DecisionTreeClassifier(),
         'extra_tree': tree.ExtraTreeClassifier(),
@@ -24,6 +24,7 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
     }
     clf = algorithms.get(name)
     clf.fit(x_tr, y_tr)
+    tr_score = clf.score(x_tr, y_tr)
     score = clf.score(x_te, y_te)
-    print(score)
-    return {name: score}
+    print(tr_score, score)
+    return {name: score, "%s_tr" % name: tr_score}
