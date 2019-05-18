@@ -26,7 +26,6 @@ class CVParameters:
     extra_trees = {
         'criterion': ['gini', 'entropy'],
         'n_estimators': list(range(5, 50, 5)),
-        'oob_score': [1, 0],
         'warm_start': [1, 0]
     }
 
@@ -38,8 +37,6 @@ class CVParameters:
     }
 
     logistic_regression = {
-        'penalty': ['l1', 'l2', 'elasticnet', None],
-        'dual': [1, 0],
         'tol': [1e-3 / i for i in range(10, 100, 10)],
         'C': [i / 10 for i in range(5, 15, 1)],
         'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga']
@@ -47,7 +44,7 @@ class CVParameters:
 
     passive_aggressive = {
         'tol': [1e-3 / i for i in range(10, 100, 10)],
-        'early_stopping': [1, 0],
+        'early_stopping': [True, False],
         'loss': ['hinge', 'squared_hinge'],
         'warm_start': [1, 0]
     }
@@ -60,10 +57,9 @@ class CVParameters:
     sgd = {
         'loss': ['hinge', 'log', 'modified_huber', 'squared_hinge',
                  'perceptron'],
-        'penalty': ['l1', 'l2', 'elasticnet', None],
+        'penalty': ['l1', 'l2', 'elasticnet', 'none'],
         'alpha': [i / 10000 for i in range(8, 12, 1)],
-        'tol': [1e-3 / i for i in range(10, 100, 10)],
-        'learning_rate': ['constant', 'optimal', 'invscaling', 'adaptive']
+        'tol': [1e-3 / i for i in range(10, 100, 10)]
     }
 
     bernoulli = {
@@ -89,13 +85,12 @@ class CVParameters:
         'activation': ['logistic', 'tanh', 'relu'],
         'solver': ['lbfgs', 'sgd', 'adam'],
         'alpha': [0.0001 / i for i in range(10, 100, 10)],
-        'learning_rate': ['constant', 'optimal', 'invscaling', 'adaptive'],
+        'learning_rate': ['constant', 'invscaling', 'adaptive'],
         'early_stopping': [True]
     }
 
     linear_svc = {
-        'penalty': ['l1', 'l2'],
-        'loss': ['hinge', 'squared_hinge'],
+        'penalty': ['l2'],
         'multi_class': ['ovr', 'crammer_singer'],
         'tol': [1e-3 / i for i in range(10, 100, 10)],
         'C': [i / 10 for i in range(5, 15, 1)]
@@ -160,4 +155,3 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
     print(tr_score, score, tr_fscore, fscore)
     return {name: {'test': score, "train": tr_score, 'f1_test': fscore,
                    'f1_train': tr_fscore}}
-
