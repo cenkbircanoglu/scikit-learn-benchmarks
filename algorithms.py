@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 from sklearn import ensemble
 from sklearn import linear_model
 from sklearn import naive_bayes
@@ -10,7 +11,6 @@ from sklearn.metrics import f1_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.experimental import enable_hist_gradient_boosting  # noqa
 from sklearn.ensemble import HistGradientBoostingClassifier
-
 
 class CVParameters:
     ada_boost = {
@@ -107,7 +107,7 @@ class CVParameters:
     }
 
     gradient_boosting = {
-        'loss': ['deviance', 'exponential'],
+        'loss': ['deviance'],
         'learning_rate': [i / 10. for i in range(1, 10, 1)],
         'criterion': ['friedman_mse'],
         'tol': [1e-4 / i for i in range(10, 100, 10)]
@@ -143,15 +143,24 @@ def train_test(x_tr, y_tr, x_te, y_te, name):
         'gradient_boosting': ensemble.GradientBoostingClassifier(),
         'hist_gradient_boosting': HistGradientBoostingClassifier()
     }
-    clf = GridSearchCV(algorithms.get(name), getattr(CVParameters, name),
-                       cv=5, n_jobs=-1)
-    clf.fit(x_tr, y_tr)
-    print(clf.best_params_)
-    print(clf.best_score_)
-    tr_score = clf.score(x_tr, y_tr)
-    score = clf.score(x_te, y_te)
-    tr_fscore = f1_score(y_tr, clf.predict(x_tr))
-    fscore = f1_score(y_te, clf.predict(x_te))
-    print(tr_score, score, tr_fscore, fscore)
-    return {name: {'test': score, "train": tr_score, 'f1_test': fscore,
-                   'f1_train': tr_fscore}}
+    res = {}
+    try:
+        clf = GridSearchCV(algorithms.get(name), getattr(CVParameters, name),
+                           cv=2, n_jobs=-1)
+        start = time.clock()
+        clf.fit(x_tr, y_tr)
+        tr_time = time.clock() - start
+        print(tr_time)
+        print(clf.best_params_)
+        print(clf.best_score_)
+        tr_score = clf.score(x_tr, y_tr)
+        score = clf.score(x_te, y_te)
+        tr_fscore = f1_score(y_tr, clf.predict(x_tr), average='weighted')
+        fscore = f1_score(y_te, clf.predict(x_te), average='weighted')
+        print(tr_score, score, tr_fscore, fscore)
+        res =  {name: {'test': score, 'train': tr_score, 'f1_test': fscore,
+                       'f1_train': tr_fscore, 'tr_time': tr_time}}
+        res[name].update(clf.best_params_)
+    except Exception as e:
+        print(e)
+    return res
